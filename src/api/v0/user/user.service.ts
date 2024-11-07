@@ -4,16 +4,15 @@ import UserRepository from "../../../repository/mongo/impl/user.repository";
 import logger from "../../../util/logger/logger";
 import SecurityUtility from "../../../util/security/securityUtility";
 import StringUtility from "../../../util/string.utility";
-import EmailService from "../email/email.service";
+import PatientService from "../patient/patient.service";
 
 export default class UserService {
   private repository: UserRepository;
-  private emailService: EmailService;
-  private societyName = "Oaksone Lakeview Apartments";
+  private patientService: PatientService;
 
   constructor() {
     this.repository = new UserRepository(new UserEntity({}));
-    this.emailService = new EmailService();
+    this.patientService = new PatientService();
   }
 
   async addUser(user: any) {
