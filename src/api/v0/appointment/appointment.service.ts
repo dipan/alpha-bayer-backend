@@ -25,6 +25,6 @@ export default class AppointmentService {
         : {
             providerId: { $eq: userInfo.id },
           };
-    return await this.repository.readWithFilter(filter);
+    return await this.repository.read();
   }
 }

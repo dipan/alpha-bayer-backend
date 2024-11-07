@@ -152,3 +152,5 @@ const basePath = match ? match[3] : null;
 CommonUtility.displayRegisteredRouterPaths(rootRouter, basePath ?? "/");
 
 startApplication();
+
+module.exports = app;

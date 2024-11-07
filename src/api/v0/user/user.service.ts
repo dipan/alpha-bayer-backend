@@ -1,5 +1,7 @@
-import UserEntity from "../../../entity/mongo/impl/user.entity";
+import PatientEntity from "../../../entity/mongo/impl/patient.entity";
+import UserEntity, { USER_ROLE } from "../../../entity/mongo/impl/user.entity";
 import { TBasicMongoEntity } from "../../../entity/mongo/mongo.entity";
+import PatientRepository from "../../../repository/mongo/impl/patient.repository";
 import UserRepository from "../../../repository/mongo/impl/user.repository";
 import logger from "../../../util/logger/logger";
 import SecurityUtility from "../../../util/security/securityUtility";
@@ -8,10 +10,12 @@ import PatientService from "../patient/patient.service";
 
 export default class UserService {
   private repository: UserRepository;
+  private patientRepository: PatientRepository;
   private patientService: PatientService;
 
   constructor() {
     this.repository = new UserRepository(new UserEntity({}));
+    this.patientRepository = new PatientRepository(new PatientEntity({}));
     this.patientService = new PatientService();
   }
 
@@ -29,6 +33,10 @@ export default class UserService {
       user.otp = SecurityUtility.generateOTP(10);
     }
     const newUser = await this.repository.create(user);
+    if (user.role === USER_ROLE.PATIENT) {
+      user.patientId = user._id;
+      this.patientRepository.create(user);
+    }
     return newUser;
   }
 
