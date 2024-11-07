@@ -10,15 +10,16 @@ const authRouter: Router = Router();
 const service = new AuthService();
 const userService = new UserService();
 
-authRouter.route("/login").get(async (req: Request, res: Response) => {
+authRouter.route("/login").post(async (req: Request, res: Response) => {
   const params = req.params;
   const query = req.query;
   const headers = req.headers;
   const body = req.body;
   const response: ApiResponse = { status: 200, body: { message: "OK" } };
   try {
-    response.body.data = await service.userLogin(headers);
+    response.body.data = await service.userLogin({ ...body, ...headers });
     response.body.message = "User logged in successfully";
+    response.body.token = response.body.data.token;
     response.status = 200;
   } catch (error: any) {
     logger.error(error);

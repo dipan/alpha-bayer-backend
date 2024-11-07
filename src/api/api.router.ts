@@ -8,7 +8,13 @@ import CommonUtility from "../util/commonUtility";
 
 export type ApiResponse = {
   status: number;
-  body: { code?: number; message: string; data?: any; meta?: any };
+  body: {
+    code?: number;
+    message: string;
+    data?: any;
+    meta?: any;
+    [key: string]: any;
+  };
 };
 
 const apiRouter: Router = Router();

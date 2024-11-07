@@ -28,7 +28,7 @@ export default class AuthService {
       roles: user.roles,
       memberDetails: { flatId, isCommiteeMember, roles },
     });
-    return { email, token, residentDetails: user };
+    return { email, token, user };
   }
 
   async userSignUp(headers: any) {
