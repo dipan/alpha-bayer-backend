@@ -25,8 +25,7 @@ export default class AuthService {
     const token = JWTUtility.generateToken({
       id: user._id,
       username: user.username,
-      roles: user.roles,
-      memberDetails: { flatId, isCommiteeMember, roles },
+      role: user.role,
     });
     return { email, token, user };
   }
