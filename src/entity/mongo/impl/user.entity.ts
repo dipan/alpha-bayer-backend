@@ -1,29 +1,42 @@
 import moment from "moment";
 import mongoose, { Model, Schema } from "mongoose";
 import IMongoEntity, { TBasicMongoEntity } from "../mongo.entity";
-import { TModelSociety } from "./society.entity";
 
-export interface TModelBlock extends TBasicMongoEntity, Document {
-  societyId: mongoose.Types.ObjectId | TModelSociety;
-  name: { type: String };
-  flats: { type: Number };
-  parkingSpaces: { type: Number };
+export enum USER_ROLE {
+  ADMIN = "ADMIN",
+  STAFF = "STAFF",
+  OWNER = "OWNER",
+  RESIDENT = "RESIDENT",
+  TENANT = "TENANT",
+  GUEST = "GUEST",
 }
 
-const mongoSchema = new Schema<TModelBlock>({
-  societyId: { type: Schema.Types.ObjectId, ref: "society", required: true },
+interface TModelUser extends TBasicMongoEntity, Document {
+  name: { type: String };
+  username: { type: String };
+  password: { type: String };
+  otp: { type: Number };
+  roles: { type: USER_ROLE[] };
+}
+
+const mongoSchema = new Schema<TModelUser>({
   name: { type: String },
-  flats: { type: Number },
-  parkingSpaces: { type: Number },
+  username: { type: String, required: true, unique: true },
+  password: { type: String },
+  otp: { type: Number },
+  roles: {
+    type: [{ type: String, enum: Object.values(USER_ROLE), required: true }],
+    default: [USER_ROLE.GUEST],
+  },
   createdAt: { type: Number },
   createdBy: { type: String },
   updatedAt: { type: Number },
   updatedBy: { type: String },
 });
 
-const mongoModel = mongoose.model<TModelBlock>("block", mongoSchema);
+const mongoModel = mongoose.model<TModelUser>("users", mongoSchema);
 
-export default class BlockEntity implements IMongoEntity {
+export default class UserEntity implements IMongoEntity {
   _id: string;
   createdAt: number;
   createdBy: string | undefined;
@@ -31,12 +44,14 @@ export default class BlockEntity implements IMongoEntity {
   updatedBy: string | undefined;
   [key: string]: any;
   private name: string | undefined;
-  private flats: number | undefined;
-  private parkingSpaces: number | undefined;
+  private username: string | undefined;
+  private password: string | undefined;
+  private otp: number | undefined;
+  private roles: USER_ROLE[];
 
-  constructor(allowedOrigin: Partial<TBasicMongoEntity>) {
-    const { id, createdBy, updatedBy, name, flats, parkingSpaces } =
-      allowedOrigin ?? {};
+  constructor(user: Partial<TBasicMongoEntity>) {
+    const { id, createdBy, updatedBy, name, username, password, otp, roles } =
+      user ?? {};
     this._id = id;
     this.createdAt = moment().milliseconds();
     this.createdBy = createdBy;
@@ -44,8 +59,10 @@ export default class BlockEntity implements IMongoEntity {
     this.updatedBy = updatedBy;
 
     this.name = name;
-    this.flats = flats;
-    this.parkingSpaces = parkingSpaces;
+    this.username = username;
+    this.password = password;
+    this.otp = otp;
+    this.roles = roles;
   }
 
   getSchema(): mongoose.Schema<

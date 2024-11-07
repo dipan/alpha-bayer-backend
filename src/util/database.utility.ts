@@ -1,6 +1,5 @@
 import config from "../config/config";
 import { DatabaseManager } from "../db/mongodb-manager";
-import { ResidentsModel } from "../entity/mongo/impl/resident.entity";
 import StringUtility from "./string.utility";
 
 class DatabaseUtility {
@@ -34,18 +33,6 @@ class DatabaseUtility {
     DatabaseManager.getInstance()
       .getConnection(config.mongodb.collection)
       ?.collection(collectionName);
-    console.log(
-      await ResidentsModel.updateMany(
-        {},
-        [
-          {
-            // $set: { isPrimaryContact: "$isCommiteeMember" },
-            $unset: "isCommiteeMember",
-          },
-        ],
-        { upsert: false, multi: true }
-      )
-    );
   }
 }
 
