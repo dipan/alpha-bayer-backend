@@ -21,6 +21,11 @@ authRouter.route("/login").post(async (req: Request, res: Response) => {
     response.body.message = "User logged in successfully";
     response.body.token = response.body.data.token;
     response.status = 200;
+    res.cookie("token", response.body.data.token, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
   } catch (error: any) {
     logger.error(error);
     response.status = 500;

@@ -46,7 +46,7 @@ userRouter
     const tokenPayload = res.locals.tokenPayload;
     const allowedUserRole = USER_ROLE.PROVIDER;
     const response: ApiResponse = { status: 200, body: { message: "OK" } };
-    if (tokenPayload.roles.includes(allowedUserRole)) {
+    if (tokenPayload.role === allowedUserRole) {
       try {
         response.body.data = await service.getUsers({});
         response.body.message = "Residents retrieved successfully";

@@ -19,9 +19,11 @@ import BrevoEmailNotification from "./notification/impl/brevoEmail.notification"
 import TaskManager from "./task/task.manager.";
 import CommonUtility from "./util/commonUtility";
 import logger from "./util/logger/logger";
+import cookieParser from "cookie-parser";
 
 const app: Express = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 app.use(
   fileUpload({
