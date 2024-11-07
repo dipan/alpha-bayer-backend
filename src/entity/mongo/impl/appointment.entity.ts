@@ -33,7 +33,10 @@ const mongoSchema = new Schema<TModelAppointment>({
   updatedBy: { type: String },
 });
 
-const mongoModel = mongoose.model<TModelAppointment>("users", mongoSchema);
+const mongoModel = mongoose.model<TModelAppointment>(
+  "appointments",
+  mongoSchema
+);
 
 export default class AppointmentEntity implements IMongoEntity {
   _id: string;

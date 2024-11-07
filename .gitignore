@@ -7,6 +7,5 @@ temp
 package-lock.json
 
 .env
-.env.dev
 .env.local
 src/notification/impl/brevoEmail.notification.ts
