@@ -26,6 +26,7 @@ interface Config {
   smtp: {
     googlePassword: string;
   };
+  brevokey: string;
 }
 
 const match = __dirname.match(new RegExp(/(.*src)(.*)/));
@@ -63,6 +64,7 @@ const config: Config = {
   smtp: {
     googlePassword: process.env.GOOGLE_PASSWORD || "",
   },
+  brevokey: process.env.BREVO_KEY || "",
 };
 
 export default config;
