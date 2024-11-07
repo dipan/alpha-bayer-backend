@@ -1,0 +1,7 @@
+{
+  "type": "mysql",
+  "url": "mysql://$1:$2@aws.connect.psdb.cloud/project_management_db?ssl={'rejectUnauthorized':true}",
+  "entities": ["src/entity/mysql/*.entity.*"],
+  "logging": true,
+  "synchronize": true
+}

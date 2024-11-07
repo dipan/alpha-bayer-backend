@@ -1,0 +1,5 @@
+export enum RENTAL_STATUS {
+  NOT_RENTED,
+  AVAILABLE_FOR_RENT,
+  RENTED,
+}

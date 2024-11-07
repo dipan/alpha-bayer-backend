@@ -1,0 +1,88 @@
+import { Request, Response, Router } from "express";
+import { URL } from "url";
+import logger from "../../../util/logger/logger";
+import StringUtility from "../../../util/string.utility";
+import { ApiResponse } from "../../api.router";
+import AuthService from "./auth.service";
+
+const authRouter: Router = Router();
+const service = new AuthService();
+
+authRouter.route("/login").get(async (req: Request, res: Response) => {
+  const params = req.params;
+  const query = req.query;
+  const headers = req.headers;
+  const body = req.body;
+  const response: ApiResponse = { status: 200, body: { message: "OK" } };
+  try {
+    response.body.data = await service.userLogin(headers);
+    response.body.message = "User logged in successfully";
+    response.status = 200;
+  } catch (error: any) {
+    logger.error(error);
+    response.status = 500;
+    response.body.message = "Error occurred logging in user";
+    response.body.data = error.message;
+  }
+  res.status(response.status).send(response.body);
+});
+
+authRouter
+  .route("/signup")
+  .post(async (req: Request, res: Response) => {
+    const params = req.params;
+    const query = req.query;
+    const headers = req.headers;
+    const body = req.body;
+    const response: ApiResponse = { status: 200, body: { message: "OK" } };
+    try {
+      response.body.data = await service.userSignUp(headers);
+      response.body.message = "User retrieved successfully";
+      response.status = 200;
+    } catch (error: any) {
+      logger.error(error);
+      response.status = 500;
+      response.body.message = "Error occurred sign up user";
+      response.body.data = error.message;
+    }
+    res.status(response.status).send(response.body);
+  })
+  .patch(async (req: Request, res: Response) => {
+    const params = req.params;
+    const query = req.query;
+    const headers = req.headers;
+    const body = req.body;
+    const response: ApiResponse = { status: 200, body: { message: "OK" } };
+    try {
+      response.body.data = await service.userLogin(headers);
+      response.body.message = "User retrieved successfully";
+      response.status = 200;
+    } catch (error: any) {
+      logger.error(error);
+      response.status = 500;
+      response.body.message = "Error occurred logging in user";
+      response.body.data = error.message;
+    }
+    res.status(response.status).send(response.body);
+  });
+
+authRouter.patch("/set-password", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const query = req.query;
+  const headers = req.headers;
+  const body = req.body;
+  const response: ApiResponse = { status: 200, body: { message: "OK" } };
+  try {
+    response.body.data = await service.userSetPassword(headers);
+    response.body.message = "Password set successfully";
+    response.status = 200;
+  } catch (error: any) {
+    logger.error(error);
+    response.status = 500;
+    response.body.message = "Error updating user password";
+    response.body.data = error.message;
+  }
+  res.status(response.status).send(response.body);
+});
+
+export default authRouter;
