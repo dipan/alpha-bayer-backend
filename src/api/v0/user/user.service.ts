@@ -18,7 +18,11 @@ export default class UserService {
 
   async addUser(user: any) {
     logger.debug(`ADD: resident for ${user}`);
-    user.username = String(user.username).toLowerCase();
+    user.email = String(user.email).toLowerCase();
+    const existingUser = await this.findByEmail(user.email);
+    if (existingUser) {
+      throw new Error(`User[${user.email}] already registered!`);
+    }
     user.password = StringUtility.isEmptyOrNull(user.password)
       ? ""
       : SecurityUtility.createHashedPassword(user.password);

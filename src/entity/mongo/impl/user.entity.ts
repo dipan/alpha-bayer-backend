@@ -21,7 +21,7 @@ const mongoSchema = new Schema<TModelUser>({
   phone: { type: Number },
   name: { type: String },
   password: { type: String },
-  roles: {
+  role: {
     type: { type: String, enum: Object.values(USER_ROLE) },
   },
   otp: { type: String },
@@ -40,26 +40,37 @@ export default class UserEntity implements IMongoEntity {
   updatedAt: number;
   updatedBy: string | undefined;
   [key: string]: any;
+  private email: string | undefined;
+  private phone: number | undefined;
   private name: string | undefined;
-  private username: string | undefined;
   private password: string | undefined;
+  private role: USER_ROLE;
   private otp: number | undefined;
-  private roles: USER_ROLE[];
 
   constructor(user: Partial<TBasicMongoEntity>) {
-    const { id, createdBy, updatedBy, name, username, password, otp, roles } =
-      user ?? {};
+    const {
+      id,
+      createdBy,
+      updatedBy,
+      email,
+      phone,
+      name,
+      password,
+      otp,
+      role,
+    } = user ?? {};
     this._id = id;
     this.createdAt = moment().milliseconds();
     this.createdBy = createdBy;
     this.updatedAt = moment().milliseconds();
     this.updatedBy = updatedBy;
 
+    this.email = email;
+    this.phone = phone;
     this.name = name;
-    this.username = username;
     this.password = password;
+    this.role = role;
     this.otp = otp;
-    this.roles = roles;
   }
 
   getSchema(): mongoose.Schema<
