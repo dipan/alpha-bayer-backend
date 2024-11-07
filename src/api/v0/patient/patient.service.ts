@@ -23,6 +23,6 @@ export default class PatientService {
   }
 
   async findByPatientId(patientId: string): Promise<TBasicMongoEntity> {
-    return await this.repository.readById(patientId);
+    return await this.repository.findOne("patientId", patientId);
   }
 }
