@@ -12,28 +12,23 @@ export default class AuthService {
   }
 
   async userLogin(headers: any) {
-    const { username, password } = headers;
-    logger.debug(`ResidentService: getResidents ${username}`);
-    const user = await this.userService.findByUsername(username);
+    const { email, password } = headers;
+    logger.debug(`ResidentService: getResidents ${email}`);
+    const user = await this.userService.findByEmail(email);
     if (!user) {
-      throw new Error(`User[${username}] is not found`);
+      throw new Error(`User[${email}] is not found`);
     }
     if (!SecurityUtility.verifyPassword(password, user.password)) {
       throw new Error(`Incorrect password provided, please try again`);
     }
     const { flatId, isCommiteeMember, roles } = user;
-    const expirationTimeConfig = {
-      ADMIN: "7D",
-      GUEST: "15D",
-      STAFF: "30D",
-    };
     const token = JWTUtility.generateToken({
       id: user._id,
       username: user.username,
       roles: user.roles,
       memberDetails: { flatId, isCommiteeMember, roles },
     });
-    return { username, token, residentDetails: user };
+    return { email, token, residentDetails: user };
   }
 
   async userSignUp(headers: any) {

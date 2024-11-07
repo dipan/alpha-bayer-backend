@@ -44,7 +44,7 @@ userRouter
     const { origin } = req.headers;
     const body = req.body;
     const tokenPayload = res.locals.tokenPayload;
-    const allowedUserRole = USER_ROLE.ADMIN;
+    const allowedUserRole = USER_ROLE.PROVIDER;
     const response: ApiResponse = { status: 200, body: { message: "OK" } };
     if (tokenPayload.roles.includes(allowedUserRole)) {
       try {
@@ -112,7 +112,6 @@ userRouter.route("/session").get(async (req: Request, res: Response) => {
   const { origin } = req.headers;
   const body = req.body;
   const tokenPayload = res.locals.tokenPayload;
-  const allowedUserRole = USER_ROLE.ADMIN;
   const response: ApiResponse = { status: 200, body: { message: "OK" } };
   try {
     response.body.data = tokenPayload;

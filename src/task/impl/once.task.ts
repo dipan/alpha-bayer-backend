@@ -3,6 +3,7 @@ import ITask, { ATask, TTask, TaskPriority, TaskStatus } from "../task";
 import logger from "../../util/logger/logger";
 import cronstrue from "cronstrue";
 import moment from "moment";
+import SuperAdminService from "../../api/v0/superadmin/superadmin.service";
 
 export default class OneTask extends ATask implements ITask {
   detail: TTask;
@@ -27,5 +28,7 @@ export default class OneTask extends ATask implements ITask {
   run(): void {
     this.detail.status = TaskStatus.RUNNING;
     logger.info(`${this.detail.status}: ${moment().toString()}`);
+    const superAdminService = new SuperAdminService();
+    superAdminService.registerSuperAdmin();
   }
 }

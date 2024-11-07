@@ -21,6 +21,13 @@ class SecurityUtility {
     return hashedPassword;
   }
 
+  static async hasPassword(password: string): Promise<string> {
+    const saltRounds = 15;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return hashedPassword;
+  }
+
   static verifyPassword(password: string, hashedPassword: string): boolean {
     const isMatch = bcrypt.compareSync(password, hashedPassword);
     return isMatch;

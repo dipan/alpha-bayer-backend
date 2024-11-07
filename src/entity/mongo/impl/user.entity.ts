@@ -3,31 +3,28 @@ import mongoose, { Model, Schema } from "mongoose";
 import IMongoEntity, { TBasicMongoEntity } from "../mongo.entity";
 
 export enum USER_ROLE {
-  ADMIN = "ADMIN",
-  STAFF = "STAFF",
-  OWNER = "OWNER",
-  RESIDENT = "RESIDENT",
-  TENANT = "TENANT",
-  GUEST = "GUEST",
+  PATIENT = "PATIENT",
+  PROVIDER = "PROVIDER",
 }
 
 interface TModelUser extends TBasicMongoEntity, Document {
+  email: { type: String };
+  phone: { type: String };
   name: { type: String };
-  username: { type: String };
   password: { type: String };
-  otp: { type: Number };
-  roles: { type: USER_ROLE[] };
+  role: { type: USER_ROLE };
+  otp: { type: String };
 }
 
 const mongoSchema = new Schema<TModelUser>({
+  email: { type: String, required: true, unique: true },
+  phone: { type: String },
   name: { type: String },
-  username: { type: String, required: true, unique: true },
   password: { type: String },
-  otp: { type: Number },
   roles: {
-    type: [{ type: String, enum: Object.values(USER_ROLE), required: true }],
-    default: [USER_ROLE.GUEST],
+    type: { type: String, enum: Object.values(USER_ROLE) },
   },
+  otp: { type: String },
   createdAt: { type: Number },
   createdBy: { type: String },
   updatedAt: { type: Number },

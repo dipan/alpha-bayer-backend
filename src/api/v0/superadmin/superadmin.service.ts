@@ -16,7 +16,7 @@ export default class SuperAdminService {
   async userSignUp(username: any) {
     logger.debug(`ADD: resident for ${username}`);
     username = String(username).toLowerCase();
-    let user = await this.userService.findByUsername(username);
+    let user = await this.userService.findByEmail(username);
     if (!user) {
       user = await this.userService.addUser({
         username,
@@ -35,5 +35,16 @@ export default class SuperAdminService {
       <span>https://oakstone-lakeview.vercel.app/set-password?${user._id}=${user.otp}</span>`
     );
     return "Email Sent successfully";
+  }
+
+  async registerSuperAdmin() {
+    const email = "superadmin@hcl.test";
+    let user = await this.userService.findByEmail(email);
+    if (!user) {
+      user = await this.userService.addUser({
+        email,
+        password: await SecurityUtility.hasPassword("SuperAdmin!123"),
+      });
+    }
   }
 }
