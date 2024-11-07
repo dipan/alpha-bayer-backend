@@ -15,7 +15,7 @@ import entityRouter from "./api/entity.router";
 import repositoryRouter from "./api/repository.router";
 import config from "./config/config";
 import { DatabaseManager } from "./db/mongodb-manager";
-import BrevoEmailNotification from "./notification/impl/brevoEmail.notification";
+// import BrevoEmailNotification from "./notification/impl/brevoEmail.notification";
 import TaskManager from "./task/task.manager.";
 import CommonUtility from "./util/commonUtility";
 import logger from "./util/logger/logger";
@@ -78,9 +78,9 @@ rootRouter.get("/health", (req: Request, res: Response) => {
 rootRouter.get("/config", async (req: Request, res: Response) => {
   let { jwt, mongodb, mysql, smtp, ...viewConfig } = config;
   const response: any = { ...viewConfig };
-  response.mailCoountDetails = (
-    await new BrevoEmailNotification().getAccountDetails()
-  ).data;
+  // response.mailCoountDetails = (
+  //   await new BrevoEmailNotification().getAccountDetails()
+  // ).data;
   res.status(200).send(response);
 });
 
