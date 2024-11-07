@@ -7,7 +7,7 @@ const appointmentRouter: Router = Router();
 const service = new AppointmentService();
 
 appointmentRouter
-  .route("/appointment")
+  .route("")
   .post(async (req: Request, res: Response) => {
     const body = req.body;
     const response: ApiResponse = { status: 200, body: { message: "OK" } };

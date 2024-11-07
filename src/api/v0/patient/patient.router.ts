@@ -11,7 +11,7 @@ patientRouter.route("").get(async (req: Request, res: Response) => {
   const tokenPayload = res.locals.tokenPayload;
   const allowedUserRole = USER_ROLE.PROVIDER;
   const response: ApiResponse = { status: 200, body: { message: "OK" } };
-  if (tokenPayload.roles.includes(allowedUserRole)) {
+  if (tokenPayload.role === allowedUserRole) {
     try {
       response.body.data = await service.getPatients({});
       response.body.message = "Patients retrieved successfully";
