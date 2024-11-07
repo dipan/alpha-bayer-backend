@@ -9,7 +9,7 @@ export enum USER_ROLE {
 
 interface TModelUser extends TBasicMongoEntity, Document {
   email: { type: String };
-  phone: { type: String };
+  phone: { type: Number };
   name: { type: String };
   password: { type: String };
   role: { type: USER_ROLE };
@@ -18,7 +18,7 @@ interface TModelUser extends TBasicMongoEntity, Document {
 
 const mongoSchema = new Schema<TModelUser>({
   email: { type: String, required: true, unique: true },
-  phone: { type: String },
+  phone: { type: Number },
   name: { type: String },
   password: { type: String },
   roles: {
